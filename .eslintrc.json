@@ -1,0 +1,21 @@
+{
+  "extends": ["airbnb", "prettier", "prettier/react"],
+  "env": {
+    "browser": true
+  },
+  "overrides": [
+    {
+      "files": "**/*.stories.jsx",
+      "rules": {
+        "react/jsx-props-no-spreading": "off"
+      }
+    },
+    {
+      "files": "**/*.test.@(js|jsx)",
+      "env": {
+        "jest": true
+      },
+      "extends": ["plugin:jest/recommended", "plugin:jest/style"]
+    }
+  ]
+}
