@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import axios from "axios";
 import propTypes from "prop-types";
+import { selfsolverApi } from "../config";
 import styles from "./LoginForm.module.css";
+import TokenService from "../services/TokenService";
 
 const onLogin = (setError, history) => (event) => {
   event.preventDefault();
   const form = event.target;
   const { email, password } = form;
   axios
-    .post(`${process.env.REACT_APP_SELFSOLVER_API}/login`, {
+    .post(`${selfsolverApi}/login`, {
       email: email.value,
       password: password.value,
     })
     .then((response) => {
       const token = response.data.access_token;
-      localStorage.setItem("access-token", token);
+      TokenService.save(token);
       history.push("/dashboard");
     })
     .catch((error) => {
