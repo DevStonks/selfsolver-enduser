@@ -12,7 +12,7 @@ body,
 .app {
   font-size: 0.875rem;
   background-color: white;
-  max-width: 600px;
+  max-width: 540px;
   display: flex;
   flex-direction: column;
 }
