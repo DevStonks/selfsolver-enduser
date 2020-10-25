@@ -12,20 +12,9 @@ body,
 .app {
   font-size: 0.875rem;
   background-color: white;
-  max-width: 480px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
-}
-
-.app-header {
-  background-color: rgb(209, 230, 247);
-  margin-bottom: 1rem;
-}
-
-.app-header img {
-  display: block;
-  width: 100%;
-  padding: 0.66rem;
 }
 
 .form-signin {

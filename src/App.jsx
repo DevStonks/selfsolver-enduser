@@ -5,15 +5,13 @@ import Dashboard from "./components/Dashboard";
 import Impressoras from "./components/Impressoras";
 import Defeitos from "./components/Defeitos";
 import Solucao from "./components/Solucao";
+import Header from "./components/Header";
 import { PrivateRoute, PublicOnlyRoute } from "./components/route-utils";
-import logo from "./consulti.png";
 
 const App = () => {
   return (
     <div className="app">
-      <header className="app-header">
-        <img src={logo} alt="ConsulTI" />
-      </header>
+      <Header />
       <main className="container">
         <PublicOnlyRoute
           exact
