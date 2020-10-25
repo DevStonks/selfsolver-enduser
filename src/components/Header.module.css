@@ -50,6 +50,7 @@
     font-size: 1rem;
   }
   .logout img {
+    margin: 0 auto;
     height: 1.66rem;
   }
 }

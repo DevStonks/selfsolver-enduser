@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import propTypes from "prop-types";
 import { selfsolverApi } from "../config";
 import styles from "./LoginForm.module.css";
-import TokenService from "../services/TokenService";
+import AuthContext from "../contexts/AuthContext";
 
-const onLogin = (setError, history) => (event) => {
+const onLogin = (setError, login) => (event) => {
   event.preventDefault();
   const form = event.target;
   const { email, password } = form;
@@ -15,9 +15,7 @@ const onLogin = (setError, history) => (event) => {
       password: password.value,
     })
     .then((response) => {
-      const token = response.data.access_token;
-      TokenService.save(token);
-      history.push("/dashboard");
+      login(response.data.access_token);
     })
     .catch((error) => {
       if (error.response.status === 401) {
@@ -26,11 +24,12 @@ const onLogin = (setError, history) => (event) => {
     });
 };
 
-const LoginForm = ({ history }) => {
+const LoginForm = () => {
   const [error, setError] = useState("");
+  const { login } = useContext(AuthContext);
 
   return (
-    <form className="form-signin" onSubmit={onLogin(setError, history)}>
+    <form className="form-signin" onSubmit={onLogin(setError, login)}>
       <h1 className="h3 mb-3 font-weight-normal">Olá, querido cliente!</h1>
       <p>Entre com seu email e senha para acessar a ferramenta!</p>
       <label htmlFor="inputEmail" className={styles.label}>
