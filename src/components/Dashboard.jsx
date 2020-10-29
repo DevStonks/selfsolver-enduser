@@ -1,40 +1,46 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ChamadoStub from "./ChamadoStub";
-
-const chamados = [
-  {
-    id: 27,
-    impressora: "28868816954",
-    abertura: "2 horas atrás",
-    marca: "Epson",
-    modelo: "EcoTank L3110",
-    local: "Campus Campinas",
-  },
-  {
-    id: 29,
-    impressora: "55465785451",
-    abertura: "1 hora atrás",
-    marca: "Samsung",
-    modelo: "SL-M2070W",
-    local: "Campus Sumaré",
-  },
-];
+import ApiService from "../services/ApiService";
+import AppContext from "../contexts/AppContext";
 
 export default () => {
+  const { tickets, setTickets } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    ApiService.getTickets()
+      .then(({ data }) => {
+        setLoading(false);
+        setTickets(data.tickets);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setError(err.message);
+      });
+  }, [setTickets]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+  if (error) {
+    return <div>{error}</div>;
+  }
   return (
     <div className="dashboard">
       <h1 className="h3 font-weight-normal text-center">Chamados em aberto</h1>
       <div className="list-group mt-3">
-        {chamados.map((chamado) => (
+        {tickets.map((chamado) => (
           <ChamadoStub
             key={chamado.id}
             id={chamado.id}
-            impressora={chamado.impressora}
-            abertura={chamado.abertura}
-            marca={chamado.marca}
-            modelo={chamado.modelo}
-            local={chamado.local}
+            impressora={chamado.device.serial}
+            abertura={chamado.created}
+            marca={chamado.device.family.brand.name}
+            modelo={chamado.device.family.name}
+            local={chamado.device.location.label}
           />
         ))}
       </div>

@@ -6,12 +6,15 @@ import { BrowserRouter as Router } from "react-router-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { AuthProvider } from "./contexts/AuthContext";
+import { AppProvider } from "./contexts/AppContext";
 
 ReactDOM.render(
   <Router>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <AppProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </AppProvider>
   </Router>,
   document.getElementById("root")
 );

@@ -1,11 +1,14 @@
 import React from "react";
+import Moment from "react-moment";
 import propTypes from "prop-types";
 
 const ChamadoStub = ({ id, impressora, abertura, marca, modelo, local }) => (
   <button type="button" className="list-group-item list-group-item-action">
     <div className="d-flex w-100 justify-content-between">
       <h5 className="mb-1">Chamado #{id}</h5>
-      <small>{abertura}</small>
+      <small>
+        <Moment toNow>{abertura}</Moment>
+      </small>
     </div>
     <p className="mb-1">
       Impressora {marca} {modelo} <br /> Número de Série {impressora}
