@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import "./App.css";
 import LoginForm from "./components/LoginForm";
 import Dashboard from "./components/Dashboard";
@@ -7,8 +7,16 @@ import Defeitos from "./components/Defeitos";
 import Solucao from "./components/Solucao";
 import Header from "./components/Header";
 import { PrivateRoute, PublicOnlyRoute } from "./components/route-utils";
+import TokenService from "./services/TokenService";
+import AuthContext from "./contexts/AuthContext";
 
 const App = () => {
+  const { login } = useContext(AuthContext);
+  useEffect(() => {
+    if (TokenService.read()) {
+      login(TokenService.get());
+    }
+  }, [login]);
   return (
     <div className="app">
       <Header />
