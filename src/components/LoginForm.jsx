@@ -1,19 +1,14 @@
 import React, { useContext, useState } from "react";
-import axios from "axios";
 import propTypes from "prop-types";
-import { selfsolverApi } from "../config";
 import styles from "./LoginForm.module.css";
 import AuthContext from "../contexts/AuthContext";
+import ApiService from "../services/ApiService";
 
 const onLogin = (setError, login) => (event) => {
   event.preventDefault();
   const form = event.target;
   const { email, password } = form;
-  axios
-    .post(`${selfsolverApi}/login`, {
-      email: email.value,
-      password: password.value,
-    })
+  ApiService.login(email.value, password.value)
     .then((response) => {
       login(response.data.access_token);
     })
