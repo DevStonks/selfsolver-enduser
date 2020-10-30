@@ -11,12 +11,14 @@ import TokenService from "./services/TokenService";
 import AuthContext from "./contexts/AuthContext";
 
 const App = () => {
-  const { login } = useContext(AuthContext);
+  const { login, logout } = useContext(AuthContext);
   useEffect(() => {
     if (TokenService.read()) {
       login(TokenService.get());
+    } else {
+      logout()
     }
-  }, [login]);
+  }, [login, logout]);
   return (
     <div className="app">
       <Header />

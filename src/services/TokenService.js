@@ -1,4 +1,4 @@
-import decode from "jwt-decode";
+import decode, { InvalidTokenError } from "jwt-decode";
 import { tokenStorageKey } from "../config";
 
 export default {
@@ -9,7 +9,13 @@ export default {
     return localStorage.getItem(tokenStorageKey);
   },
   read() {
-    return decode(this.get());
+    try {
+      return decode(this.get());
+    }
+    catch (error) {
+      if (error instanceof InvalidTokenError) { return false }
+      else { throw (error) }
+    }
   },
   save(token) {
     return localStorage.setItem(tokenStorageKey, token);
