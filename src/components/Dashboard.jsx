@@ -14,7 +14,7 @@ export default () => {
     ApiService.getTickets()
       .then(({ data }) => {
         setLoading(false);
-        setTickets(data.tickets);
+        setTickets(data);
       })
       .catch((err) => {
         setLoading(false);
