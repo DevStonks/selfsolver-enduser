@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import propTypes from "prop-types";
 
 const AppContext = React.createContext({
+  devices: [],
   tickets: [],
-  loading: false,
-  setLoading: () => {},
+  setDevices: () => {},
   setTickets: () => {},
 });
 
 export const AppProvider = ({ children }) => {
   const [tickets, setTickets] = useState([]);
+  const [devices, setDevices] = useState([]);
   return (
-    <AppContext.Provider value={{ tickets, setTickets }}>
+    <AppContext.Provider value={{ devices, tickets, setDevices, setTickets }}>
       {children}
     </AppContext.Provider>
   );
