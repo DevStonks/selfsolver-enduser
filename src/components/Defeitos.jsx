@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import propTypes from "prop-types";
+import ApiService from "../services/ApiService";
+import AppContext from "../contexts/AppContext";
 
 const impressora = {
   id: 45,
@@ -14,17 +16,26 @@ const navigate = (history) => (event) => {
   history.push(`/chamado/sugestao/${event.target.value}`);
 };
 
-const fetchDefeitos = (setDefeitos) => () => {
-  axios.get("/defeitos").then((response) => {
-    setDefeitos(response.data);
-  });
-};
-
 const Defeitos = ({ history }) => {
-  const [defeitos, setDefeitos] = useState([]);
-  const { serie, marca, modelo, local } = impressora;
+  const { defects, setDefects } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  useEffect(fetchDefeitos(setDefeitos), []);
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    ApiService.getDefects()
+      .then(({ data }) => {
+        setLoading(false);
+        setDefects(data);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setError(err.message);
+      });
+  }, [setDefects]);
+
+  const { serie, marca, modelo, local } = impressora;
 
   return (
     <form className="defeito" onChange={navigate(history)}>
@@ -33,9 +44,9 @@ const Defeitos = ({ history }) => {
         <label htmlFor="defeito">
           Selecione um defeito que sua impressora está apresentando:
           <select className="form-control" id="defeito">
-            {defeitos.map((defeito) => (
+            {defects.map((defeito) => (
               <option key={defeito.id} value={defeito.id}>
-                {defeito.descricao}
+                {defeito.description}
               </option>
             ))}
           </select>
