@@ -15,8 +15,6 @@ const App = () => {
   useEffect(() => {
     if (TokenService.read()) {
       login(TokenService.get());
-    } else {
-      logout()
     }
   }, [login, logout]);
   return (
@@ -35,7 +33,11 @@ const App = () => {
           path="/chamado/impressora"
           component={Impressoras}
         />
-        <PrivateRoute exact path="/chamado/defeito" component={Defeitos} />
+        <PrivateRoute
+          exact
+          path="/chamado/:deviceId/defeitos"
+          component={Defeitos}
+        />
         <PrivateRoute
           exact
           path="/chamado/sugestao/:defeitoId"

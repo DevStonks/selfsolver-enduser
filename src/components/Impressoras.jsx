@@ -27,7 +27,7 @@ export default () => {
   if (error) {
     return <div>{error}</div>;
   }
-  console.log(devices);
+
   return (
     <div className="impressoras">
       <h1 className="h3 font-weight-normal text-center">Abrindo Chamado</h1>

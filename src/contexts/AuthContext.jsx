@@ -4,7 +4,8 @@ import TokenService from "../services/TokenService";
 
 const AuthContext = React.createContext({
   user: null,
-  setUser: () => {},
+  login: () => {},
+  logout: () => {},
 });
 
 export const AuthProvider = ({ children }) => {

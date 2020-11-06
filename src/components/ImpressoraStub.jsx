@@ -2,9 +2,9 @@ import React from "react";
 import propTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-const ImpressoraStub = ({ serie, marca, modelo, local }) => (
+const ImpressoraStub = ({ id, serie, marca, modelo, local }) => (
   <Link
-    to="/chamado/defeito"
+    to={`/chamado/${id}/defeitos`}
     className="list-group-item list-group-item-action"
   >
     <div className="d-flex w-100 justify-content-between">
