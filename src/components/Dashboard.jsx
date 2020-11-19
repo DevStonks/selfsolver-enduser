@@ -1,26 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import ChamadoStub from "./ChamadoStub";
-import ApiService from "../services/ApiService";
-import AppContext from "../contexts/AppContext";
+import { useTickets } from "../hooks/data";
 
 export default () => {
-  const { tickets, setTickets } = useContext(AppContext);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    setLoading(true);
-    ApiService.getTickets()
-      .then(({ data }) => {
-        setLoading(false);
-        setTickets(data);
-      })
-      .catch((err) => {
-        setLoading(false);
-        setError(err.message);
-      });
-  }, [setTickets]);
+  const [tickets, loading, error] = useTickets();
 
   if (loading) {
     return <p>Loading...</p>;

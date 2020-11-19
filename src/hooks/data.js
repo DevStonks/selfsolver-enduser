@@ -33,4 +33,10 @@ export const useDevices = () => {
   return [devices, loading, error];
 };
 
+export const useTickets = () => {
+  const { tickets, setTickets } = useContext(AppContext);
+  const [loading, error] = useData(ApiService.getTickets, setTickets);
+  return [tickets, loading, error];
+};
+
 export default useData;
