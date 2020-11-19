@@ -30,9 +30,7 @@ const Defeitos = () => {
       device: parseInt(deviceId),
       defect: parseInt(defect),
     })
-      .then(({ data: ticket }) =>
-        history.push(`/chamado/sugestao/${ticket.id}`)
-      )
+      .then(({ data: ticket }) => history.push(`/chamado/${ticket.id}/solucao`))
       .catch((err) => console.log(err));
 
   return (

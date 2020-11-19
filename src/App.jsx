@@ -40,7 +40,7 @@ const App = () => {
         />
         <PrivateRoute
           exact
-          path="/chamado/sugestao/:defeitoId"
+          path="/chamado/:ticketId/solucao"
           component={Solucao}
         />
       </main>

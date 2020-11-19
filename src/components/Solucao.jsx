@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import propTypes from "prop-types";
+import React, { useState } from "react";
+import { useDevices, useSolutions, useTickets } from "../hooks/data";
+import { useParams } from "react-router-dom";
 
 const impressora = {
   id: 45,
@@ -10,28 +10,34 @@ const impressora = {
   local: "Campus Campinas",
 };
 
-const fetchSolucao = (setSolucao, defeitoId) => () => {
-  axios.get(`/solucoes/${defeitoId}`).then((response) => {
-    setSolucao(response.data);
-  });
-};
-
-const Solucao = ({ match }) => {
+const Solucao = (props) => {
   const { serie, marca, modelo, local } = impressora;
-  const [solucao, setSolucao] = useState({
-    solucao: "<p>Carregando solucoes</p>",
-  });
+  const { ticketId } = useParams();
 
-  useEffect(fetchSolucao(setSolucao, match.params.defeitoId), []);
+  const [tickets, ticketsLoading, ticketsError] = useTickets();
+  const [devices, devicesLoading, devicesError] = useDevices();
+  const [solutions, solutionsLoading, solutionsError] = useSolutions(ticketId);
+
+  const ticket = tickets.find((ticket) => ticket.id === parseInt(ticketId));
+  const device =
+    ticket &&
+    ticket.device &&
+    devices.find((device) => device.id === ticket.device.id);
+  console.log([ticket, device, solutions]);
+
+  if (devicesLoading || solutionsLoading || ticketsLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (devicesError || solutionsError || ticketsError) {
+    const error = devicesError || solutionsError || ticketsError;
+    return <div>{error.message || "Um erro aconteceu."}</div>;
+  }
 
   return (
     <div className="sugestao">
       <h1 className="h3 font-weight-normal text-center">Solução Sugerida</h1>
-      <ol className="solucao">
-        {solucao.map((s) => (
-          <li> {s.solucao}</li>
-        ))}
-      </ol>
+      <ol className="solucao">oi</ol>
       <button className="btn btn-primary btn-block mt-3" type="button">
         Problema Resolvido!
       </button>
@@ -44,14 +50,6 @@ const Solucao = ({ match }) => {
       </small>
     </div>
   );
-};
-
-Solucao.propTypes = {
-  match: propTypes.shape({
-    params: propTypes.shape({
-      defeitoId: propTypes.number.isRequired,
-    }).isRequired,
-  }).isRequired,
 };
 
 export default Solucao;
