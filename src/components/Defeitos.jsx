@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useDefects, useDevices } from "../hooks/data";
-
-const navigate = (history) => (event) => {
-  history.push(`/chamado/sugestao/${event.target.value}`);
-};
+import ApiService from "../services/ApiService";
 
 const Defeitos = () => {
   const { deviceId } = useParams();
   const history = useHistory();
   const [defects, defectsLoading, defectsError] = useDefects();
   const [devices, devicesLoading, devicesError] = useDevices();
+  const [defect, setDefect] = useState("");
 
   if (defectsLoading || devicesLoading) {
     return <p>Loading...</p>;
@@ -25,21 +23,40 @@ const Defeitos = () => {
     return <div>Um erro ocorreu ao carregar informações sobre o aparelho.</div>;
   }
 
+  const onSubmit = (event) =>
+    event.preventDefault() ||
+    ApiService.postTicket({
+      device: parseInt(deviceId),
+      defect: parseInt(defect),
+    })
+      .then(({ data: ticket }) =>
+        history.push(`/chamado/sugestao/${ticket.id}`)
+      )
+      .catch((err) => console.log(err));
+
   return (
-    <form className="defeito" onChange={navigate(history)}>
+    <form className="defeito" onSubmit={onSubmit}>
       <h1 className="h3 font-weight-normal text-center">Abrindo Chamado</h1>
       <div className="form-group">
         <label htmlFor="defeito">
           Selecione um defeito que sua impressora está apresentando:
-          <select className="form-control" id="defeito">
-            {defects.map((defeito) => (
-              <option key={defeito.id} value={defeito.id}>
-                {defeito.description}
-              </option>
-            ))}
-          </select>
         </label>
+        <select
+          className="form-control"
+          id="defeito"
+          onChange={(event) => setDefect(event.target.value)}
+        >
+          <option value="">-- Escolha na lista de defeitos --</option>
+          {defects.map((defeito) => (
+            <option key={defeito.id} value={defeito.id}>
+              {defeito.description}
+            </option>
+          ))}
+        </select>
       </div>
+      <button className="btn btn-primary btn-block mt-3" disabled={!defect}>
+        Abrir Novo Chamado
+      </button>
       <small>
         Abrindo chamado para Impressora {device.family.brand.name}{" "}
         {device.family.name} número de série {device.serial} alocada em{" "}

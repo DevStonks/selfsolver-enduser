@@ -21,4 +21,5 @@ export default {
   getTickets: () => api.get("/tickets"),
   getDevices: () => api.get("/devices"),
   getDefects: () => api.get("/defects"),
+  postTicket: (ticket) => api.post("/tickets", ticket),
 };
