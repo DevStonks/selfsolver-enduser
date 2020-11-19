@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import { useHistory, useParams } from "react-router-dom";
-import ApiService from "../services/ApiService";
-import AppContext from "../contexts/AppContext";
+import { useDefects, useDevices } from "../hooks/data";
 
 const navigate = (history) => (event) => {
   history.push(`/chamado/sugestao/${event.target.value}`);
@@ -10,30 +9,14 @@ const navigate = (history) => (event) => {
 const Defeitos = () => {
   const { deviceId } = useParams();
   const history = useHistory();
-  const { devices, defects, setDefects, setDevices } = useContext(AppContext);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [defects, defectsLoading, defectsError] = useDefects();
+  const [devices, devicesLoading, devicesError] = useDevices();
 
-  useEffect(() => {
-    setLoading(true);
-    setError(null);
-    Promise.all([ApiService.getDefects(), ApiService.getDevices()])
-      .then(([defects, devices]) => {
-        setLoading(false);
-        setDefects(defects.data);
-        setDevices(devices.data);
-      })
-      .catch((err) => {
-        setLoading(false);
-        setError(err.message);
-      });
-  }, [setDefects, setDevices]);
-
-  if (loading) {
+  if (defectsLoading || devicesLoading) {
     return <p>Loading...</p>;
   }
-  if (error) {
-    return <div>{error}</div>;
+  if (defectsError || devicesError) {
+    return <div>{defectsError || devicesError}</div>;
   }
 
   const device = devices.find((device) => device.id === parseInt(deviceId));
