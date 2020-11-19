@@ -10,7 +10,7 @@ const loadData = (getter, setter, setError, setLoading) => () => {
     })
     .catch((err) => {
       setLoading(false);
-      setError(err.message);
+      setError(err);
     });
 };
 
@@ -37,6 +37,15 @@ export const useTickets = () => {
   const { tickets, setTickets } = useContext(AppContext);
   const [loading, error] = useData(ApiService.getTickets, setTickets);
   return [tickets, loading, error];
+};
+
+export const useSolutions = (ticketId) => {
+  const [solutions, setSolutions] = useState([]);
+  const [loading, error] = useData(
+    () => ApiService.getSolutions(ticketId),
+    setSolutions
+  );
+  return [solutions, loading, error];
 };
 
 export default useData;

@@ -10,7 +10,7 @@ export default () => {
     return <p>Loading...</p>;
   }
   if (error) {
-    return <div>{error}</div>;
+    return <div>{error.message || "Um erro aconteceu."}</div>;
   }
   return (
     <div className="dashboard">

@@ -18,8 +18,9 @@ api.interceptors.request.use(
 
 export default {
   login: (email, password) => api.post(`/login`, { email, password }),
-  getTickets: () => api.get("/tickets"),
   getDevices: () => api.get("/devices"),
   getDefects: () => api.get("/defects"),
+  getSolutions: (ticketId) => api.get(`/tickets/${ticketId}/solutions`),
+  getTickets: () => api.get("/tickets"),
   postTicket: (ticket) => api.post("/tickets", ticket),
 };

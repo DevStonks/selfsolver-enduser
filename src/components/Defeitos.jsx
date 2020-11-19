@@ -14,7 +14,8 @@ const Defeitos = () => {
     return <p>Loading...</p>;
   }
   if (defectsError || devicesError) {
-    return <div>{defectsError || devicesError}</div>;
+    const error = defectsError || devicesError;
+    return <div>{error.message || "Um erro aconteceu."}</div>;
   }
 
   const device = devices.find((device) => device.id === parseInt(deviceId));
