@@ -1,52 +1,72 @@
 import React, { useState } from "react";
-import { useDevices, useSolutions, useTickets } from "../hooks/data";
 import { useParams } from "react-router-dom";
-
-const impressora = {
-  id: 45,
-  serie: "28868816954",
-  marca: "Epson",
-  modelo: "EcoTank L3110",
-  local: "Campus Campinas",
-};
+import ReactMarkdown from "react-markdown/with-html";
+import gfm from "remark-gfm";
+import { useSolutions, useTickets } from "../hooks/data";
+import youtube from "../remark-youtube";
 
 const Solucao = (props) => {
-  const { serie, marca, modelo, local } = impressora;
   const { ticketId } = useParams();
 
   const [tickets, ticketsLoading, ticketsError] = useTickets();
-  const [devices, devicesLoading, devicesError] = useDevices();
   const [solutions, solutionsLoading, solutionsError] = useSolutions(ticketId);
+  const [current, setCurrent] = useState(0);
 
   const ticket = tickets.find((ticket) => ticket.id === parseInt(ticketId));
-  const device =
-    ticket &&
-    ticket.device &&
-    devices.find((device) => device.id === ticket.device.id);
-  console.log([ticket, device, solutions]);
+  const device = ticket.device;
 
-  if (devicesLoading || solutionsLoading || ticketsLoading) {
+  if (solutionsLoading || ticketsLoading) {
     return <p>Loading...</p>;
   }
 
-  if (devicesError || solutionsError || ticketsError) {
-    const error = devicesError || solutionsError || ticketsError;
+  if (solutionsError || ticketsError) {
+    const error = solutionsError || ticketsError;
     return <div>{error.message || "Um erro aconteceu."}</div>;
   }
+
+  if (current >= solutions.length) {
+    return (
+      <div className="sugestao">
+        <h2>
+          É só isso.
+          <br /> Acabou.
+          <br /> Não tem mais jeito.
+          <br /> Boa sorte.
+          <br />
+        </h2>
+        <button className="btn btn-primary btn-block mt-3" type="button">
+          Encaminhar para o suporte
+        </button>
+      </div>
+    );
+  }
+
+  const solution = solutions[current];
 
   return (
     <div className="sugestao">
       <h1 className="h3 font-weight-normal text-center">Solução Sugerida</h1>
-      <ol className="solucao">oi</ol>
+      <div className="solucao">
+        <ReactMarkdown
+          children={solution.description}
+          plugins={[gfm, youtube]}
+          allowDangerousHtml
+        />
+      </div>
       <button className="btn btn-primary btn-block mt-3" type="button">
         Problema Resolvido!
       </button>
-      <button className="btn btn-secondary btn-block" type="button">
+      <button
+        className="btn btn-secondary btn-block"
+        type="button"
+        onClick={() => setCurrent(current + 1)}
+      >
         Ainda não resolveu!
       </button>
       <small>
-        Apresentando soluções para Impressora {marca} {modelo} número de série{" "}
-        {serie} alocada em <em>{local}</em>.
+        Apresentando soluções para Impressora {device.family.brand.name}{" "}
+        {device.family.name} número de série {device.serial} alocada em{" "}
+        <em>{device.location.label}</em>.
       </small>
     </div>
   );
