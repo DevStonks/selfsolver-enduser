@@ -17,16 +17,16 @@ export default () => {
       <h1 className="h3 font-weight-normal text-center">Chamados em aberto</h1>
       <div className="list-group mt-3">
         {tickets.map((chamado) => (
-          <Link to={`chamado/${chamado.id}/solucao`} key={chamado.id}>
-            <ChamadoStub
-              id={chamado.id}
-              impressora={chamado.device.serial}
-              abertura={chamado.created}
-              marca={chamado.device.family.brand.name}
-              modelo={chamado.device.family.name}
-              local={chamado.device.location.label}
-            />
-          </Link>
+          <ChamadoStub
+            key={chamado.id}
+            id={chamado.id}
+            impressora={chamado.device.serial}
+            abertura={chamado.created}
+            marca={chamado.device.family.brand.name}
+            modelo={chamado.device.family.name}
+            local={chamado.device.location.label}
+            encaminhado={chamado.forwarded}
+          />
         ))}
       </div>
       <Link to="/chamado/impressora" className="btn btn-primary btn-block mt-3">
