@@ -1,23 +1,28 @@
 import { useContext, useEffect, useState } from "react";
+import AuthContext from "../contexts/AuthContext";
 import AppContext from "../contexts/AppContext";
 import ApiService from "../services/ApiService";
 
-const loadData = (getter, setter, setError, setLoading) => () => {
+const loadData = (getter, setter, setError, setLoading, logout) => () => {
   getter()
     .then((response) => {
       setLoading(false);
       setter(response.data);
     })
     .catch((err) => {
+      if (err?.response?.status === 401) {
+        return logout();
+      }
       setLoading(false);
       setError(err);
     });
 };
 
 const useData = (getter, setter) => {
+  const { logout } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  useEffect(loadData(getter, setter, setError, setLoading), []);
+  useEffect(loadData(getter, setter, setError, setLoading, logout), []);
   return [loading, error];
 };
 
