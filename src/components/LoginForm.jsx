@@ -13,7 +13,7 @@ const onLogin = (setError, login) => (event) => {
       login(response.data.access_token);
     })
     .catch((error) => {
-      if (error.response.status === 401) {
+      if (error?.response?.status === 401) {
         setError("Usuário ou senha não conferem.");
       }
     });
