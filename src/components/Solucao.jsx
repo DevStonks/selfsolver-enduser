@@ -13,7 +13,7 @@ const Solucao = (props) => {
   const [current, setCurrent] = useState(0);
 
   const ticket = tickets.find((ticket) => ticket.id === parseInt(ticketId));
-  const device = ticket.device;
+  const device = ticket?.device;
 
   if (solutionsLoading || ticketsLoading) {
     return <p>Loading...</p>;
