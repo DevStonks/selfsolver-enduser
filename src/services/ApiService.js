@@ -23,4 +23,6 @@ export default {
   getSolutions: (ticketId) => api.get(`/tickets/${ticketId}/solutions`),
   getTickets: () => api.get("/tickets"),
   postTicket: (ticket) => api.post("/tickets", ticket),
+  closeTicket: (ticketId, solutionId) =>
+    api.put(`/tickets/${ticketId}`, { solution: solutionId }),
 };
