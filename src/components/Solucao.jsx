@@ -27,16 +27,17 @@ const Solucao = (props) => {
   if (current >= solutions.length) {
     return (
       <div className="sugestao">
-        <h2>
-          É só isso.
-          <br /> Acabou.
-          <br /> Não tem mais jeito.
-          <br /> Boa sorte.
-          <br />
-        </h2>
-        <button className="btn btn-primary btn-block mt-3" type="button">
+        <p className="lead">
+          Nossas soluções de auto-atendimento se esgotaram. Por favor, encaminhe
+          o atendimento para o nosso suporte usando o botão abaixo.
+        </p>
+        <a
+          href="https://trello.com/b/XHKI7G7o/selfsolver"
+          className="btn btn-primary btn-block mt-3"
+          type="button"
+        >
           Encaminhar para o suporte
-        </button>
+        </a>
       </div>
     );
   }
