@@ -25,4 +25,6 @@ export default {
   postTicket: (ticket) => api.post("/tickets", ticket),
   closeTicket: (ticketId, solutionId) =>
     api.put(`/tickets/${ticketId}`, { solution: solutionId }),
+  forwardTicket: (ticketId) =>
+    api.put(`/tickets/${ticketId}`, { forwarded: true }),
 };

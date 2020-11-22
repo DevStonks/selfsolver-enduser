@@ -5,6 +5,7 @@ import gfm from "remark-gfm";
 import { useSolutions, useTickets } from "../hooks/data";
 import youtube from "../remark-youtube";
 import ApiService from "../services/ApiService";
+import Forwarding from "./Forwarding";
 
 const Solucao = (props) => {
   const history = useHistory();
@@ -27,21 +28,7 @@ const Solucao = (props) => {
   }
 
   if (current >= solutions.length) {
-    return (
-      <div className="sugestao">
-        <p className="lead">
-          Nossas soluções de auto-atendimento se esgotaram. Por favor, encaminhe
-          o atendimento para o nosso suporte usando o botão abaixo.
-        </p>
-        <a
-          href="https://trello.com/b/XHKI7G7o/selfsolver"
-          className="btn btn-primary btn-block mt-3"
-          type="button"
-        >
-          Encaminhar para o suporte
-        </a>
-      </div>
-    );
+    return <Forwarding ticketId={ticketId} />;
   }
 
   const solution = solutions[current];
